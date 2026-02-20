@@ -17,7 +17,9 @@
       "Bash(git symbolic-ref:*)",
       "Bash(git describe:*)",
       "Bash(git reflog:*)",
-      "Bash(git fetch:*)"
+      "Bash(git fetch:*)",
+
+      "Bash(uv run marimo check:*)"
     ]
   },
   "hooks": {
