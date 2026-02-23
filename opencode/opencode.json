@@ -12,6 +12,8 @@
       "ls *": "allow",
       "git status": "allow",
       "git status *": "allow",
+      "gh pr list": "allow",
+      "gh pr list *": "allow",
       "git diff": "allow",
       "git diff --staged": "allow",
       "git diff --cached": "allow",
