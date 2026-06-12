@@ -16,11 +16,14 @@ Per-project overrides live inside the repo:
 
 - Reference global settings: `claude-code/settings.json`
 - Hook script (project-scope write guard): `claude-code/scripts/validate-project-file-ops.sh`
+- Skills: `claude-code/skills/` (e.g. `edison-brand/`, `babysit/`, `review-comments/`)
 
 To apply these globally, copy them into:
 
 - `~/.claude/settings.json` (merge with your existing settings)
 - `~/.claude/scripts/validate-project-file-ops.sh`
+- `~/.agents/skills/` (one directory per skill, each containing `SKILL.md`), then symlink
+  each into `~/.claude/skills/` (e.g. `ln -s ../../.agents/skills/edison-brand ~/.claude/skills/edison-brand`)
 
 ## Recommendations
 
