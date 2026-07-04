@@ -1,0 +1,13 @@
+name: AI Writing Check
+on:
+  workflow_dispatch:
+  pull_request:
+jobs:
+  check-ai-writing:
+    name: Em-dash & Contrastive Parallelism
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+      - name: Run AI writing check
+        run: python3 scripts/check_ai_writing.py

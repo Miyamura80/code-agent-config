@@ -1,6 +1,6 @@
 ---
 name: babysit
-description: Monitor a PR on a loop — review AI/human comments, address feedback, and keep the PR clean until it's ready to merge.
+description: Monitor a PR on a loop - review AI/human comments, address feedback, and keep the PR clean until it's ready to merge.
 user_invocable: true
 triggers:
   - /babysit
@@ -8,7 +8,7 @@ triggers:
 
 # Babysit PR Skill
 
-Continuously monitors the current PR on a 7-minute loop. Each iteration reviews incoming comments (human and AI), replies with valid/invalid assessments, fixes valid issues, and checks CI — iterating until all comments are addressed and CI passes.
+Continuously monitors the current PR on a 7-minute loop. Each iteration reviews incoming comments (human and AI), replies with valid/invalid assessments, fixes valid issues, and checks CI - iterating until all comments are addressed and CI passes.
 
 ## Prerequisites
 
@@ -78,7 +78,7 @@ Report:
 
 ## Important Notes
 
-- **Never resolve review threads** — only reply with assessments.
+- **Never resolve review threads** - only reply with assessments.
 - **Be respectful** in all replies, even when marking comments invalid.
-- **Don't over-iterate** — if all comments are addressed and CI is green, stop.
-- **Commit discipline** — batch fixes into logical commits, don't create a commit per line change.
+- **Don't over-iterate** - if all comments are addressed and CI is green, stop.
+- **Commit discipline** - batch fixes into logical commits, don't create a commit per line change.

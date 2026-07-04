@@ -138,7 +138,7 @@ These are confirmed implementation details for the Hackbox component in web proj
 
 ### Hackbox Border
 
-- Use `border-2` (2px) — NOT `border` (1px). The brand requires a visible, clean wireframe stroke.
+- Use `border-2` (2px) - NOT `border` (1px). The brand requires a visible, clean wireframe stroke.
 
 ### Tag Positioning
 
@@ -152,12 +152,12 @@ These are confirmed implementation details for the Hackbox component in web proj
 
 ### Tag Sizing
 
-- **Width:** `w-[40%]` of the box — applies to both primary and secondary variants.
-- **Height (primary):** `h-[10%]` — percentage works because primary has `aspect-square`.
-- **Height (secondary):** `h-7` (28px) — fixed height because secondary boxes have content-driven height.
+- **Width:** `w-[40%]` of the box - applies to both primary and secondary variants.
+- **Height (primary):** `h-[10%]` - percentage works because primary has `aspect-square`.
+- **Height (secondary):** `h-7` (28px) - fixed height because secondary boxes have content-driven height.
 
 ### Content Clearance
 
 - Content inside a Hackbox must have enough top padding to clear the tag area.
 - Use `pt-12` (48px) minimum for secondary boxes to avoid tag/content overlap.
-- Do **not** put text inside the Hackbox that duplicates the tag label (e.g., tag says "ABOUT", don't also have an "About me" heading as the Hackbox child — it's redundant).
+- Do **not** put text inside the Hackbox that duplicates the tag label (e.g., tag says "ABOUT", don't also have an "About me" heading as the Hackbox child - it's redundant).

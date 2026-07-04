@@ -16,13 +16,13 @@ All GitHub API calls MUST go through the helper script at `~/.claude/scripts/rev
 
 **CRITICAL rules for calling the script (violating these triggers approval prompts):**
 - **Always invoke EXACTLY as shown**: `bash /Users/eito/.claude/scripts/review-comments.sh <subcommand> [args]`
-- **Do NOT use `$HOME` or `~`** — use the literal absolute path `/Users/eito/.claude/scripts/review-comments.sh`
-- **Do NOT wrap the path in quotes** — the path has no spaces, quotes will break allowlist matching
-- **Do NOT call `gh` directly** — always use the script
-- **Do NOT pipe the script output** — no `| python`, `| jq`, `| grep`, etc. Piping changes the command and breaks allowlist matching
-- **Do NOT append `2>&1` or other redirections** — same reason
+- **Do NOT use `$HOME` or `~`** - use the literal absolute path `/Users/eito/.claude/scripts/review-comments.sh`
+- **Do NOT wrap the path in quotes** - the path has no spaces, quotes will break allowlist matching
+- **Do NOT call `gh` directly** - always use the script
+- **Do NOT pipe the script output** - no `| python`, `| jq`, `| grep`, etc. Piping changes the command and breaks allowlist matching
+- **Do NOT append `2>&1` or other redirections** - same reason
 - The script's subcommands handle filtering and formatting internally. Parse the JSON output in your reasoning, not via shell pipes
-- **The `reply` subcommand reads the body from stdin** — use a heredoc or `echo | bash ...` to pass the body. Do NOT pass the body as a positional argument (it triggers security prompts when the text contains shell-special characters like quotes, `$()`, backticks, etc.)
+- **The `reply` subcommand reads the body from stdin** - use a heredoc or `echo | bash ...` to pass the body. Do NOT pass the body as a positional argument (it triggers security prompts when the text contains shell-special characters like quotes, `$()`, backticks, etc.)
 
 ## Workflow
 
@@ -58,20 +58,20 @@ Parse the current user's login from the PR data, or use `gh api user --jq .login
 
 ### 3. Fetch and filter unresolved comments
 
-Use the `list-unresolved` subcommand which fetches threads, filters out resolved ones, removes your own comments and noise-bot comments (github-actions, codecov, dependabot), and returns clean JSON. Code-review bots (Sentry, Devin, Qodo, Recurse, Greptile) are kept — their comments are substantive reviews, not noise.
+Use the `list-unresolved` subcommand which fetches threads, filters out resolved ones, removes your own comments and noise-bot comments (github-actions, codecov, dependabot), and returns clean JSON. Code-review bots (Sentry, Devin, Qodo, Recurse, Greptile) are kept - their comments are substantive reviews, not noise.
 
 ```bash
 bash /Users/eito/.claude/scripts/review-comments.sh list-unresolved {owner} {repo} {PR_NUMBER} {your_login}
 ```
 
 This returns a JSON array where each element has:
-- `databaseId` — the comment ID (for replying)
-- `path` — the file path
-- `line` / `startLine` — line number(s)
-- `author` — who wrote the comment
-- `body` — the comment text
-- `createdAt` — when it was posted
-- `threadComments` — full conversation thread for context
+- `databaseId` - the comment ID (for replying)
+- `path` - the file path
+- `line` / `startLine` - line number(s)
+- `author` - who wrote the comment
+- `body` - the comment text
+- `createdAt` - when it was posted
+- `threadComments` - full conversation thread for context
 
 Parse this JSON output directly. **Do NOT pipe it through another command.**
 
@@ -95,23 +95,23 @@ bash /Users/eito/.claude/scripts/review-comments.sh log-since {comment_createdAt
 - Look for whether the specific concern has already been resolved in a subsequent commit
 
 Classify each comment's resolution status:
-- **Addressed** — the issue raised has already been fixed in a subsequent commit on this branch
-- **Not yet addressed** — the issue still exists in the current code
-- **Planned** — you can see from context (e.g. TODO comments, related code patterns) that there's an intent to address it but it hasn't been done yet
+- **Addressed** - the issue raised has already been fixed in a subsequent commit on this branch
+- **Not yet addressed** - the issue still exists in the current code
+- **Planned** - you can see from context (e.g. TODO comments, related code patterns) that there's an intent to address it but it hasn't been done yet
 
 ### 6. Assess each comment
 
 For each unresolved comment, evaluate:
 
-1. **Read the reviewer's feedback carefully** — understand exactly what they're asking for or pointing out
-2. **Examine the current code** — look at the referenced lines and surrounding context as they exist now
+1. **Read the reviewer's feedback carefully** - understand exactly what they're asking for or pointing out
+2. **Examine the current code** - look at the referenced lines and surrounding context as they exist now
 3. **Determine validity**:
-   - **Valid** — the reviewer identified a real issue (bug, style violation, missing edge case, unclear code, performance concern, security issue, etc.)
-   - **Invalid** — the reviewer's concern is based on a misunderstanding, is already handled elsewhere, or doesn't apply to this context
+   - **Valid** - the reviewer identified a real issue (bug, style violation, missing edge case, unclear code, performance concern, security issue, etc.)
+   - **Invalid** - the reviewer's concern is based on a misunderstanding, is already handled elsewhere, or doesn't apply to this context
 
 ### 7. Address valid issues
 
-**If a comment is valid and not yet addressed, fix it immediately.** Do not just reply — actually make the code change.
+**If a comment is valid and not yet addressed, fix it immediately.** Do not just reply - actually make the code change.
 
 For each valid + not-yet-addressed comment:
 
@@ -119,7 +119,7 @@ For each valid + not-yet-addressed comment:
    - **Small/medium** (touches existing files, or creates at most 1-2 new files) → **fix it now**. Edit the code, then reply referencing what you changed.
    - **Large** (would require creating 3-4+ new files AND modifying multiple other files) → **defer it**. Append a task entry to `next_task.md` in the repo root describing the issue, the reviewer's comment, the file/line, and what needs to be done. Reply to the comment noting it's been documented for follow-up.
 
-2. After making fixes, **do NOT commit yet** — collect all fixes first, then create a single commit at the end of step 7 (after all comments are processed). Use a commit message like `🐛 Address PR review feedback` that briefly lists what was fixed.
+2. After making fixes, **do NOT commit yet** - collect all fixes first, then create a single commit at the end of step 7 (after all comments are processed). Use a commit message like `🐛 Address PR review feedback` that briefly lists what was fixed.
 
 3. After committing, **push to the PR branch automatically** (`git push`). This ensures the reviewer sees the fixes immediately.
 
@@ -141,21 +141,21 @@ The reply format should include the validity assessment **and** the resolution s
 
 For **valid + addressed** comments (including ones you just fixed):
 ```
-**Valid** — [concise explanation of why the feedback is correct]
+**Valid** - [concise explanation of why the feedback is correct]
 
-**Status: Addressed** — [reference the fix, e.g. "Fixed in commit abc1234" or "Updated X at line N to handle Y"]
+**Status: Addressed** - [reference the fix, e.g. "Fixed in commit abc1234" or "Updated X at line N to handle Y"]
 ```
 
 For **valid + deferred** comments (too large to fix inline):
 ```
-**Valid** — [concise explanation of why the feedback is correct]
+**Valid** - [concise explanation of why the feedback is correct]
 
-**Status: Deferred** — This requires a larger change. Documented in `next_task.md` for follow-up.
+**Status: Deferred** - This requires a larger change. Documented in `next_task.md` for follow-up.
 ```
 
 For **invalid** comments:
 ```
-**Invalid** — [concise explanation of why this concern doesn't apply, referencing the specific code/context that addresses it]
+**Invalid** - [concise explanation of why this concern doesn't apply, referencing the specific code/context that addresses it]
 ```
 
 Keep replies concise (2-4 sentences per section). Reference specific line numbers, code, or commit hashes when explaining.
@@ -180,7 +180,7 @@ Report on CI:
 ### 10. Summary
 
 After processing all comments and CI, report:
-- **CI status** — passing, failing (with names), or in progress
+- **CI status** - passing, failing (with names), or in progress
 - Total unresolved comments found
 - How many were assessed as valid vs invalid
 - How many were fixed in this run, previously addressed, or deferred
@@ -192,5 +192,5 @@ After processing all comments and CI, report:
 - **Never resolve threads** - only reply with the assessment. Let the reviewer or author resolve.
 - **Be respectful** - even when marking a comment as invalid, be constructive and explain clearly.
 - **When uncertain**, lean toward "Valid" and suggest the author double-check.
-- **Skip noise-bot comments** - ignore CI/automation bots (e.g. github-actions, codecov, dependabot). **Do NOT skip code-review bots** like Sentry, Devin, Qodo, Recurse, or Greptile — treat their comments like any human reviewer's.
+- **Skip noise-bot comments** - ignore CI/automation bots (e.g. github-actions, codecov, dependabot). **Do NOT skip code-review bots** like Sentry, Devin, Qodo, Recurse, or Greptile - treat their comments like any human reviewer's.
 - If there are no unresolved comments, report "No unresolved review comments found" and stop.
