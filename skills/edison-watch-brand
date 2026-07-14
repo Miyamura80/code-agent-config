@@ -1,0 +1,146 @@
+---
+name: edison-watch-brand
+description: Apply the Edison.Watch (EdisonWatch / Edison Watch Ltd / edison.watch) brand design system to any visual output. Use this skill whenever the user is creating UI, graphics, documents, slides, diagrams, pitch decks, web pages, marketing assets, social posts, posters, or any visual artifact for Edison.Watch — even if brand compliance isn't explicitly requested. Covers the "Hackbox" visual system (cyan wireframe box + tag on black), color palette rules, typography, and layout. Trigger on mentions of Edison.Watch, EdisonWatch, Edison's Agentic Data Firewall, or when building anything that will represent the company visually.
+---
+ 
+# Edison.Watch Brand Design System
+ 
+Edison.Watch is an AI security company. Its visual identity is deliberately engineered to look like a HUD or blueprint — precise, modular, computational, "always on." Every design decision should reinforce that Edison is a technical, instrument-grade product, not a polished consumer brand.
+ 
+Before producing any visual output for Edison.Watch, internalize the principles below. They are what make the brand recognizable; deviating from them produces generic work that could belong to any AI startup.
+ 
+## The Hackbox: core visual system
+ 
+The identifying mark of the brand is the **Hackbox**: a wireframe square with a solid tag anchored to one edge, sitting on pure black. It is the brand's fingerprint and should appear somewhere in nearly every branded graphic — hero images, social posts, slide backgrounds, section dividers, loading states.
+ 
+### Anatomy
+ 
+**The Box (container)** is a perfect 1:1 square, wireframe only (no fill), stroked in Core Cyan `#C3FFFD` at a consistent thin-to-medium weight. The box sits on Baseline Black `#000000`, which represents infinite negative space.
+ 
+**The Tag (modifier)** is a solid filled rectangle in the same cyan `#C3FFFD`. It sits **inside the box, always anchored to the top-left corner**, flush against the top stroke and the left stroke. The outer edges of the tag meet the inner edges of the stroke — the tag never crosses, straddles, or floats above the stroke. Think of it as a solid block occupying the top-left corner of the container, not a label stuck onto the outside.
+ 
+**The tag is always top-left. Always.** Do not place it in other corners for "rhythm" or "visual variation." The Hackbox is a single fixed mark — its recognizability comes from being the same shape every time it appears. A top-left-tagged box next to a bottom-right-tagged box looks like two different marks and breaks the brand. When you need rhythm across multiple Hackboxes in a composition, get it from spacing, sizing (primary vs secondary box), or supporting typography — never from moving the tag.
+ 
+**The 40/10 rule** governs the Tag's proportions:
+- Tag width = **40%** of the Box's width
+- Tag height = **10%** of the Box's height
+These proportions are non-negotiable because they are what make the mark recognizable at a glance. If you find yourself wanting to make the tag bigger because it "looks weak," resist — the restraint is the point.
+ 
+**Visual check:** the mark should read as "a wireframe square with a solid chip in the top-left corner, inside the frame." If your tag is in a different corner, sticking out above the top of the box, or hanging off the side, the anchoring is wrong.
+ 
+### Secondary Box (horizontal variant)
+ 
+Use when vertical space is constrained, or for wide formats like billboards and hero banners. Derive it from the Primary Box by applying **+30% width** and **-30% height**. The Tag still follows the 40/10 rule relative to the new dimensions.
+ 
+### Multiplicity and rhythm
+ 
+Scale by **duplicating** boxes, not by enlarging a single box. Multiple boxes laid out on a grid read as "systemic" and "modular"; one big box reads as a generic logo.
+ 
+Every Hackbox in a composition uses the same mark — tag always top-left, 40% × 10%. Rhythm and visual interest come from other sources: varied spacing between boxes, mixing primary (square) and secondary (horizontal) variants, different sizes in the same cluster, or supporting typography and grid markers. The mark itself stays constant — that constancy is the brand.
+ 
+All boxes align to a strict invisible background grid. Occasionally add tiny standalone cyan dashes (1–3px) at grid intersections as "markers" — they reinforce the blueprint/technical-drawing feeling without adding noise.
+ 
+## Color system
+ 
+### Base palette (target these usage shares)
+ 
+The brand breathes when these ratios hold roughly true across a composition:
+ 
+| Role | Name | Hex | Share |
+|---|---|---|---|
+| Dominant background | Baseline Black | `#000000` | ~40% |
+| Secondary / text / surfaces | Graphene Grey | `#9BA4A6` | ~30% |
+| Accent / active elements | Core Cyan | `#C3FFFD` | ~20% |
+| Highlights / light surfaces | Wavelength White | `#F9F9F9` | ~10% |
+ 
+The heavy black and restrained cyan are load-bearing. Designs that flip these proportions (mostly white background with cyan accents) immediately stop looking like Edison.
+ 
+### Extended palette (use sparingly)
+ 
+These are accent tones for states, charts, or secondary UI. They should appear as small touches, never as dominant colors.
+ 
+**Grid Grey** (neutral steps): `#F9F9F9` · `#C8C8C8` · `#8F8F8F` · `#555555` · `#383838` · `#1C1C1C` · `#000000`
+ 
+**Core Cyan** (tints): `#E0FFFE` · `#C3FFFD` (main) · `#7DE6E2`
+ 
+**Graphene Grey** (cool greys): `#A3A9B3` · `#5E6575` (main) · `#2F3440`
+ 
+**Circuit Green** (success / positive state): `#3EE7A0` · `#00C781` (main) · `#007A52`
+ 
+**Infra Red** (error / alert / threat): `#FF6B7D` · `#FF3B4D` (main) · `#C3001A`
+ 
+### Color rules for the Hackbox specifically
+ 
+Inside a Hackbox composition, the palette narrows to three values only:
+- **Background:** `#000000`
+- **Box stroke and Tag fill:** `#C3FFFD`
+- **Typography on black:** pure white `#FFFFFF` (not Wavelength White) for maximum readability
+Do not introduce the extended palette into a Hackbox mark itself. Save those colors for surrounding UI, data visualization, or status indicators.
+ 
+## Typography
+ 
+Use a **neo-grotesque sans-serif**. Inter is the default; Helvetica, Roboto, or a similar geometric sans are acceptable fallbacks. No serifs, no rounded display fonts, no humanist faces — they break the instrument-grade feel.
+ 
+Typography pairs with the Hackbox rather than competing with it:
+- In branded graphics, text is typically set below or beside the box cluster, centered or left-aligned to the grid.
+- Keep tracking tight to normal. Avoid heavy letterspacing unless the text is a single short label acting as a UI element.
+- Use white `#FFFFFF` on black. For secondary text, drop to Graphene Grey `#9BA4A6`.
+- For monospaced data readouts (timestamps, IDs, telemetry-style labels), a monospace like JetBrains Mono or IBM Plex Mono is acceptable and reinforces the technical feeling.
+## Layout and composition
+ 
+- **Grid first.** Sketch an invisible grid and align every element to it. The grid is the structural logic of the brand.
+- **Negative space is an active element.** Don't fill black areas because they feel empty — the void is doing work.
+- **Modularity over singularity.** Prefer compositions built from repeated small units over one large hero element.
+- **No gradients, no glows, no glassmorphism, no soft shadows.** These soften the brand and fight the blueprint aesthetic. Flat fills and crisp strokes only.
+- **No rounded corners on the Hackbox or primary UI containers.** Squares stay square. Interior UI elements (buttons, inputs) may use a small radius (2–4px) if needed for product usability, but keep it minimal.
+## Atmosphere keywords
+ 
+When in doubt, check the output against these. The design should feel:
+- Monochromatic cybernetic
+- Systemic
+- Modular
+- Computed / blueprint
+- "Always on"
+It should **not** feel: warm, organic, hand-drawn, consumer-playful, gradient-y, or "designery."
+ 
+## Common applications
+ 
+**Slide decks / pitch decks.** Black slide masters. Hackbox in a corner of the title slide, possibly enlarged to cover most of the slide with content inside. Section dividers use a single Hackbox centered with section title below. Body slides can drop the Hackbox and use white text on black with occasional cyan for emphasis keywords or data.
+ 
+**Web / product UI.** Near-black (`#000000` or `#0A0A0A`) app chrome. Graphene Grey for borders and inactive states. Core Cyan for primary actions, focus states, active data, and links. Circuit Green / Infra Red only for status. Hackbox motif can anchor login screens, empty states, and loading states.
+ 
+**Documents (docx, pdf, reports).** Most document content can be black-on-white for legibility — the brand expresses through a single Hackbox on the cover, Core Cyan as the accent color in headings and callouts, and a neo-grotesque sans throughout. Don't try to make a 20-page report all-black-background; it fights readability.
+ 
+**Diagrams (architecture, flows).** Black background, cyan strokes for primary flow, Graphene Grey for secondary, Circuit Green / Infra Red only to indicate allowed/blocked states in security diagrams. Boxes in diagrams echo the Hackbox: square corners, thin cyan strokes.
+ 
+**Social / marketing graphics.** Full Hackbox treatment. Black, cyan box + tag, white headline below, minimal supporting copy.
+ 
+## SVG reference: the Hackbox
+ 
+Use this as a starting point when drawing the Hackbox in code. The box is 400×400 with a 2px cyan stroke. The tag is 160×40 (40% × 10%) sitting **inside** the box, flush against the top stroke and the left stroke, anchored to the top-left corner. This is the only valid configuration.
+ 
+```xml
+<svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="600" fill="#000000"/>
+  <!-- Primary Box: 400x400 wireframe, 2px stroke -->
+  <rect x="100" y="100" width="400" height="400"
+        fill="none" stroke="#C3FFFD" stroke-width="2"/>
+  <!-- Tag: 160x40, INSIDE the box, flush to top-left corner -->
+  <!-- x = box.x + stroke (101), y = box.y + stroke (101) -->
+  <rect x="101" y="101" width="160" height="40" fill="#C3FFFD"/>
+  <!-- Optional grid markers -->
+  <rect x="300" y="299" width="2" height="2" fill="#C3FFFD"/>
+  <rect x="550" y="549" width="2" height="2" fill="#C3FFFD"/>
+</svg>
+```
+ 
+For the Secondary Box, scale to 520×280 (400 × 1.3 × 0.7) and recompute the tag as 208×28 — still flush to the top-left corner.
+ 
+## Quick self-check before shipping
+ 
+Before returning visual output, look at it and ask:
+1. Does it read as black-dominant with restrained cyan, or has the cyan taken over?
+2. If there's a Hackbox (or several), is the tag **always in the top-left corner**, 40% × 10%, sitting inside the box flush against the stroke?
+3. Are all corners square? No rounded pill shapes?
+4. Is the type a neo-grotesque sans?
+5. Would this look at home next to a HUD, a terminal, or a circuit-board schematic? If yes, ship it. If it looks like a generic SaaS marketing page, rework.
