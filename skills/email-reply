@@ -1,0 +1,57 @@
+---
+name: email-reply
+description: Draft replies to emails as editable Gmail drafts. Use this whenever the user asks to reply to, respond to, or "draft a reply" for an email or thread, or forwards a message and wants an answer written. Covers gathering context before drafting, matching tone to the relationship, cutting everything non-essential, and iterating fast on wording. Trigger it even when the user just says "reply to this" or "what should I say back" without saying the word "skill".
+---
+ 
+# Email reply
+ 
+Good replies come from context and judgment, not just wording. Work in this order: understand the thread and the relationship, decide what actually needs to be said, write it tight, then iterate.
+ 
+## 1. Gather context before drafting
+ 
+Never draft from the latest message alone. Pull the full thread and verify what it claims, using connected tools (MCP only, no shell):
+ 
+- Read the entire thread so the reply fits what was already said.
+- Check the calendar when the email references a meeting ("great meeting you yesterday", "as discussed"). Confirm it actually happened and with whom. A claimed meeting with no calendar trace is worth noticing.
+- Look for prior correspondence with the sender or their company to understand history and any prior commitments.
+- Confirm names, entities, and details (legal entity, spelling, who else is involved) rather than guessing.
+Only gather what makes the reply better. Do not trawl everything.
+ 
+## 2. Flag what looks off, then defer to the user
+ 
+If something about the inbound looks risky (a vague buzzword pitch, a shell-company address, a one-way NDA where the user is the party disclosing, an unusual payment or urgency cue), say so briefly and plainly, peer to peer. One or two lines, not a lecture, and no bullet-pointed sermon.
+ 
+Then respect the user's call. It is their relationship and their risk appetite. Once they say "it's fine", drop it and proceed without relitigating.
+ 
+## 3. Protect the user's information by default
+ 
+Keep sensitive internal detail (financials, cap table, named customers, confidential partners, security-sensitive specifics) out of replies to external or unverified parties unless the user explicitly opens it up. Public positioning is fine to share; internal specifics are not, until told otherwise. When you deliberately leave something out, it is fine to note it so the user can add it back if they want.
+ 
+## 4. Match register to the recipient
+ 
+Write to the person who will read it. Business-outcome language for a business or finance reader, technical depth for a technical one. Mirror the vocabulary they used in their own message. If the recipient is non-technical, cut jargon and lead with outcomes.
+ 
+## 5. Cut ruthlessly
+ 
+Short wins. Default to concise and tighten further whenever asked.
+ 
+- When the user asks for a specific length ("4 sentences", "shorter"), hit it exactly.
+- Kill repeated words. If a key term appears twice close together, rework one instance.
+- Drop redundant setups and filler.
+- Lead with the point; move any ask or link high up unless a warmer opening is doing real work.
+## 6. Minimize friction when the relationship is warm
+ 
+The goal is usually to move to the next step with the fewest exchanges. When the user already knows the person:
+ 
+- Cut clarifying questions the user does not need answered. Every question invites another round trip.
+- Skip pleasantries that add nothing (no "thanks for the follow up", no throat-clearing) when the user prefers it.
+- Match the real next step. If they are getting dinner, say so warmly and drop any scheduling link. If a formal booking is the next step, include the scheduling link.
+## 7. Mechanics
+ 
+- Always create the reply as an editable draft with the reply-to-thread tool. Never send automatically; sending is the user's decision.
+- Keep your chat message short, since the user reviews and edits in the draft UI.
+- When the user asks you to read the draft back, fetch the current saved draft and read it verbatim, including any edits they made themselves.
+- Honor standing preferences (for this user: no em-dashes, and use cal.com/eito80 for any scheduling link). An explicit in-the-moment instruction always overrides a standing preference.
+## Iterating
+ 
+Expect several passes. Each user note is usually a small, surgical change (swap a word, drop a line, reframe for a different reader). Make that change and leave the rest of the agreed content intact unless asked. Re-read with fresh eyes after each edit to catch new repetition or awkwardness the change introduced.
