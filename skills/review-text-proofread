@@ -1,0 +1,135 @@
+---
+name: review-text-proofread
+description: >
+  Proofread and copyedit a piece of writing and return it as an interactive marked-up
+  HTML artifact: the text rendered cleanly with each issue highlighted inline and a
+  comment that pops open right under the line when clicked (tap again to close). Use
+  this whenever the user invokes "/review-text-proofread", or asks to proofread, copyedit,
+  mark up, annotate, critique, sanity-check, or "review my writing" on any prose,
+  email, essay, application, blog post, report, cover letter, grant, or similar, and
+  would benefit from seeing the criticisms anchored to the exact words rather than as a
+  flat list in chat. Default to this skill for proofreading requests on a substantial
+  body of text even if the user does not explicitly say "artifact" or "highlight".
+  Do not use it for tiny one-line fixes, code review, or when the user only wants a
+  silently corrected copy with no commentary.
+---
+ 
+# Review / Proofread Text
+ 
+Produce an interactive proofreading markup of a piece of writing. The output is a single
+self-contained HTML artifact where every flagged passage is highlighted in the text, and
+clicking a highlight pops its comment open inline, directly beneath that line. This keeps
+each criticism anchored to the exact words it refers to, which is far easier to act on
+than a disconnected list.
+ 
+The interaction the user values most: **clicking a highlight reveals the note in place,
+with no jumping to the bottom of the page.** The bundled template already implements this.
+Do not rebuild it from scratch and do not change the engine.
+ 
+## Workflow
+ 
+1. **Get the text.** It may be pasted in the message, in an uploaded file, or in a Google
+   Doc. If it is a `.docx`/`.pdf`/Google Doc, read it first with the appropriate tool. If
+   nothing is attached but the user clearly expects a document, ask for it before proceeding.
+2. **Read it critically, twice.** First pass for correctness (facts, names, numbers, logic),
+   second pass for language (grammar, clarity, consistency, tone). Read the whole thing before
+   writing any comments so you catch repetition, contradictions, and naming drift across the
+   document.
+3. **Verify factual claims. This is not optional.** Any statistic, dated fact, named figure,
+   market size, citation, or "X is the largest/first/only" claim gets checked with `web_search`
+   before you label it. Cite the primary source in the comment. Do not flag a number as wrong
+   from memory: search, then judge. If you previously flagged something and the user supplies a
+   source proving you wrong, own it plainly and correct the markup. A confident wrong correction
+   is worse than no correction.
+4. **Categorise every issue by severity** (rubric below) and decide the fix. Each comment names
+   the problem and gives a concrete correction, not just "reword this".
+5. **Build the artifact** from `assets/template.html`. Copy it to the output directory, fill the
+   four `>>> FILL <<<` zones, wrap each flagged passage, write the matching comments, set the
+   scorebar counts. Delete the example highlight/comment block.
+6. **Save to the outputs directory and present it.** Then give a short chat summary: lead with the
+   critical items, in plain language, and offer to hand back a clean corrected copy with all fixes
+   applied.
+## Severity rubric
+ 
+Be balanced. A wall of red is demoralising and less useful than a triaged one. Most documents
+have only a handful of true criticals. Always include at least one `Verified` item when you have
+checked something that holds up, so the review reads as fair rather than hostile.
+ 
+| Class  | Tag      | Colour | Use for |
+|--------|----------|--------|---------|
+| `crit` | Critical | red    | Wrong facts, broken or unsupported claims, wrong names, anything that would embarrass the author or mislead the reader if sent. Fix before sending. |
+| `high` | Fix      | amber  | Clear grammar, spelling, or clarity errors. Unambiguously wrong, but not factually dangerous. |
+| `med`  | Style    | blue   | Consistency, word choice, tone, repetition, hyphenation, naming drift. Improvements, not errors. |
+| `note` | Note     | grey   | Judgement calls, strategic suggestions, open placeholders, "consider whether". The author may reasonably disagree. |
+| `ok`   | Verified | green  | A claim or figure you checked that is correct. Say what you verified it against. |
+ 
+## Comment style
+ 
+Each comment has three parts (Verified items can skip the fix):
+- `.snip` — the exact quoted passage, so the user recognises it instantly.
+- `.issue` — what is wrong and *why it matters*, in one or two sentences. Explain the reasoning,
+  do not just assert.
+- `.fix` — the concrete correction. Put suggested replacement wording in `<code>` style so it
+  stands out.
+Keep comments tight. Quote sparingly and never reproduce long passages of the user's text inside a
+comment. Honour any standing writing preferences the user has (for example, a preference against
+em-dashes): apply them to your suggested rewrites, and flag violations in their own text as `med`.
+ 
+## Markup conventions (the engine depends on these)
+ 
+A flagged passage in the document column:
+ 
+```html
+<a class="hl SEV" data-c="N"><span id="dN">the exact flagged words<sup>N</sup></span></a>
+```
+ 
+Its matching comment in the rail:
+ 
+```html
+<div class="cmt SEV" id="cN" data-target="dN">
+  <div class="cmt-head"><span class="badge SEV">N</span><span class="tag SEV">LABEL</span></div>
+  <p class="snip">"the exact flagged words"</p>
+  <p class="issue">What is wrong and why.</p>
+  <p class="fix"><b>Fix:</b> the correction, with <code>suggested wording</code>.</p>
+</div>
+```
+ 
+Rules that must hold or the interaction breaks:
+- `SEV` is one of `crit | high | med | note | ok`. `LABEL` follows the rubric mapping
+  (crit→Critical, high→Fix, med→Style, note→Note, ok→Verified). The `data-c`, the `id="dN"`,
+  the `<sup>N</sup>`, and the comment's `id="cN"` / `data-target="dN"` all share the same number `N`.
+- Every `N` is unique across the document. Number in reading order.
+- For `ok` items you may use `<sup>✓</sup>` and `<span class="badge ok">✓</span>` instead of the number, but keep `data-c`/`id` numeric and matching.
+- Never put an `id` attribute inside `.snip`, `.issue`, or `.fix`. The script clones a comment's
+  inner HTML when popping it open inline, and a duplicated id would collide.
+- Set the five scorebar `<b>` counts (crit/high/med/note/ok) to match what you wrote. The `Comments · N` heading and the Resolved tally fill in automatically, leave them alone.
+Structure the document column with `<h2>` for major sections and `<p>` for prose, mirroring the
+source. For form-like inputs use `<p class="meta">` with `<span class="field-label">`. Leftover
+placeholders in the source can be shown with `<span class="ph">[FILL IN]</span>`.
+ 
+## Built-in reader controls (no markup needed)
+ 
+The engine adds these automatically; you author no markup for them:
+- **Resolve.** Every comment gets a Resolve button. Clicking it fades the comment and its
+  highlight, flips the button to Resolved, and increments the Resolved tally in the scorebar.
+  Clicking again reopens it. This lets the user clear items they judge already addressed as they
+  work through the review, in the rail or in the popped-open inline card.
+- **Hide resolved.** A toggle in the rail header hides resolved comments so only open ones remain.
+- **Live counts.** The `Comments · N` heading and the Resolved count are computed on load, so you
+  never hand-count them.
+Resolve state is in memory for the session and resets on a full reload; that is expected. Do not
+add localStorage or sessionStorage, they are blocked in this artifact environment.
+ 
+## Optional fact-check card
+ 
+When the text leans on several numbers, add the `.statcard` table (commented out at the bottom of
+the template) to the rail. It gives a side-by-side of claim vs source vs status. Set the header
+green (`style="background:var(--ok)"`) when everything checks out, red when something does not.
+This satisfies the common preference to see numbers laid out rather than buried in prose.
+ 
+## Pitfalls
+ 
+- Do not escape into rebuilding the CSS/JS. Fill the template; the engine is the reusable part.
+- Read the whole document before commenting, or you will miss cross-references and repetition.
+- Search before judging facts. Re-check your own earlier flags if challenged.
+- Match every `data-c` to exactly one `id="cN"`. A mismatch leaves a highlight that does nothing.
