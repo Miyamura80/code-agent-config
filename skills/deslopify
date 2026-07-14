@@ -1,0 +1,343 @@
+---
+name: deslopify
+description: Strip AI-writing tells out of a piece of text — the vocabulary, the sentence shapes, the formatting habits, the rhetorical tics that make prose read as machine-drafted. Use this skill whenever the user invokes it with "/deslopify", or whenever they ask to remove "AI slop", "LLM tells", "ChatGPT-isms", to "humanize" their writing, make text "sound less like AI / ChatGPT / a chatbot", fix "AI voice" or "robotic tone", or otherwise clean up text that reads as machine-generated. Also trigger this when a user pastes a draft and asks to make it sound more human, less generic, less like marketing copy, or less like a LinkedIn post — even if they don't use the word "AI". This skill transforms the text; it does not just critique it.
+---
+ 
+# Deslopify
+ 
+Strip the tells of AI-written prose out of a piece of text while preserving the author's actual argument, facts, and voice.
+ 
+## What this skill does
+ 
+The user has a piece of writing that reads as machine-drafted. Your job is to rewrite it so it reads as human-drafted — without changing what it says, only how it says it. You are a line editor, not a ghostwriter. Don't add new claims, don't remove substantive content, don't restructure the argument. Change vocabulary, sentence rhythm, and formatting.
+ 
+## Workflow
+ 
+1. **Get the text.** If the user hasn't pasted it yet, ask for it. If they attached a file, read it.
+2. **Scan for tells** using the checklist in `references/tells.md`. Read that file before editing — it's the full catalog.
+3. **Rewrite.** Apply the fixes. Keep the author's meaning, facts, structure, and strong opinions intact.
+4. **Return the cleaned text first**, then a short "what I changed" note underneath. The cleaned text is the product; the notes are the receipt.
+Do not output the edited text in a code block unless the user asked for one — they want to read it as prose. If the original was long (over ~500 words), offer to produce a diff-style before/after for any specific passages the user wants to inspect.
+ 
+## The core rule: preserve voice, kill slop
+ 
+Slop is the generic scaffolding AI drapes over an idea. Voice is how *this* author thinks. When in doubt, cut the scaffolding and leave the idea bare. A short, blunt sentence is almost always more human than a long one with a participle tail.
+ 
+If the text has real opinions, keep them sharp. If it has hedges that sound like corporate PR ("it's worth noting that," "it's important to consider"), cut them. If the author has a real phrase that happens to appear on a tell list — leave it. The tells are patterns, not banned words. A single "crucial" in a piece that otherwise reads human is fine. Six of them plus a tapestry is not.
+ 
+## The mechanical passes
+ 
+Run these passes in order. Each one catches a different category.
+ 
+### Pass 1: Vocabulary
+ 
+Open `references/tells.md` and do a find-and-fix on the vocabulary list. Replace with plainer words or cut the sentence entirely if the word was doing no work. Don't swap one cliché for another.
+ 
+Common substitutions: "delve into" → "look at" or just cut it; "leverage" → "use"; "navigate the complexities of" → cut; "in today's ever-evolving landscape" → cut; "it's not just X, it's Y" → rewrite as a direct claim; "pivotal moment" → "turning point" or specify what actually happened.
+ 
+### Pass 2: Sentence shapes
+ 
+Look for these structural patterns and break them:
+ 
+- **Negative parallelism**: "It's not X, it's Y." Convert to a direct claim.
+- **False ranges**: "From intimate gatherings to global movements." Replace with a specific example or cut.
+- **Tailing participle clauses**: sentences ending in "...emphasizing the importance of community" or "...reflecting a broader shift toward innovation." Cut the tail or convert to a separate, concrete sentence.
+- **Triadic lists**: AI loves rhythm-of-three ("precise, elegant, and powerful"). One or two concrete adjectives is more human. Pick the most specific one.
+- **Hedge openers**: "It's worth noting that," "It's important to understand," "One could argue that." Delete the opener; the sentence almost always survives.
+- **Compulsive summaries**: "In conclusion," "Overall," "In essence." If the piece is short, delete the summary paragraph. If it's long, rewrite the conclusion so it says something the body didn't.
+### Pass 3: Formatting
+ 
+- **Em-dashes**: AI uses them everywhere, often formulaically. Replace most with commas, colons, periods, or parentheses. Keep one or two if they're doing real work. If the user has said they never want em-dashes, remove all of them.
+- **Title Case Section Headers**: If the surrounding style is sentence case, rewrite headers as sentence case. If there's no clear style, prefer sentence case.
+- **Overeager bold**: Bolding every instance of a keyword is a tell. Remove bold unless it's marking something the reader needs to scan for (a term being defined, a warning).
+- **Emoji bullets**: ✅ 🚀 💡 at the start of list items. Remove unless the platform is social media and the user wants them.
+- **Markdown in prose contexts**: If the output is going in an email or a doc, strip the `**bold**` and `###` headers that AI tends to sprinkle in.
+### Pass 4: Content smells
+ 
+These are harder to fix mechanically; they require judgment.
+ 
+- **Puffed-up significance**: "This represents a pivotal moment in the evolution of..." If the claim is real, state it plainly. If it's filler, cut it.
+- **Generic statements that could apply to anything**: "Innovation is reshaping industries across the globe." If it's not specific to the subject, delete it.
+- **Press-release tone**: Landscapes that are scenic, views that are breathtaking, initiatives that are bold. Replace with concrete description or cut.
+- **Hollow notability claims**: "Widely regarded as a leader in the field." Either provide the evidence or delete the claim.
+## What to leave alone
+ 
+- **Technical precision.** If the author wrote "asynchronous event loop," don't dumb it down.
+- **Strong opinions.** Sharpness is human. Don't soften.
+- **Deliberate style choices.** Some writers use em-dashes heavily on purpose. Ask if you're unsure.
+- **Quoted material.** Never edit inside quotes.
+- **Code, equations, proper nouns.**
+## User preferences to honor
+ 
+- If the user has a stated preference against em-dashes, treat it as absolute — remove all of them.
+- If the user is writing in a non-English language, the vocabulary list in `references/tells.md` is English-specific. Apply the structural and formatting passes; note to the user that vocabulary tells in their language may differ.
+- If the user asks for a specific target voice ("make it sound like a Hacker News comment", "make it sound like a terse engineer"), let that override the default neutral voice.
+## Output format
+ 
+```
+<cleaned text>
+ 
+---
+ 
+**Changes:**
+- <short bullet on what category of changes you made>
+- <another>
+- <another>
+```
+ 
+Keep the changes summary to 3-6 bullets. The user cares about the text, not the audit trail.
+ 
+## Example
+ 
+**Input:**
+> In today's rapidly evolving technological landscape, artificial intelligence has emerged as a pivotal force reshaping industries. It's not just a tool — it's a fundamental paradigm shift. Companies that fail to navigate this complex terrain risk being left behind, while those that embrace AI stand to unlock unprecedented value. From small startups to global enterprises, the implications are profound, underscoring the critical importance of thoughtful adoption strategies.
+ 
+**Output:**
+> AI is changing how companies operate. Firms that adopt it thoughtfully tend to pull ahead; firms that ignore it tend to fall behind. That's true whether you're a five-person startup or a Fortune 500.
+>
+> ---
+>
+> **Changes:**
+> - Cut the "in today's evolving landscape" opener and the closing "underscoring the importance" tail.
+> - Replaced negative parallelism ("not just X, it's Y") with a direct claim.
+> - Killed the false range ("from small startups to global enterprises") and replaced it with a concrete pair.
+> - Removed em-dash, "pivotal," "navigate," "unprecedented," "profound."
+ 
+The rewrite is shorter. That's usually right — slop is mostly filler.
+
+  ---
+
+  # Tells of AI writing: the full catalog
+ 
+This is the field guide. Read it before rewriting. It's organized by category so you can run each mechanical pass cleanly.
+ 
+No single tell is proof a piece is AI-written. What matters is density. One "crucial" in a human piece is fine; six plus a tapestry plus Title Case Headers is not. When editing, calibrate to the density — don't hunt every word on the list if the piece mostly reads human already.
+ 
+## Vocabulary
+ 
+Words that spiked dramatically in usage after ChatGPT launched in late 2022. They cluster by model era.
+ 
+### High-signal (all eras)
+ 
+- delve, delve into
+- tapestry (especially "rich tapestry of")
+- pivotal
+- crucial
+- underscore / underscores
+- testament ("a testament to")
+- embark (on a journey)
+- navigate (the complexities of)
+- leverage (as a verb for "use")
+- foster / fostering
+- landscape (as metaphor for "field" or "industry")
+- intricate / intricacies
+- meticulous / meticulously
+- multifaceted
+- nuanced (when used vaguely)
+- robust (when used vaguely)
+- vibrant
+- beacon (of hope / of leadership)
+- cutting-edge
+- state-of-the-art
+- game-changer / game-changing
+- revolutionary (applied to incremental things)
+- seamless / seamlessly
+- holistic
+- paradigm / paradigm shift
+- unprecedented
+- profound (applied to mundane things)
+- transformative
+- empower / empowering
+- align with / alignment
+- bolster / bolstered
+- enhance (when "improve" or "add" would do)
+- showcase / showcasing
+- highlight / highlighting (as verb scaffolding)
+- emphasize / emphasizing
+- garner
+- enduring
+- quinoa (oddly specific but real — appears in random food contexts)
+### Opening and closing phrases (near-certain tells)
+ 
+- "In today's ever-evolving / fast-paced / rapidly changing [landscape/world/era]"
+- "In the realm of..."
+- "In the world of..."
+- "It's important to note that..."
+- "It's worth noting that..."
+- "It's crucial to understand..."
+- "One might argue that..."
+- "In essence..."
+- "In conclusion..."
+- "Overall..."
+- "Ultimately..."
+- "At its core..."
+- "As we navigate..."
+- "Certainly!" (as an opener)
+- "I hope this helps!" (as a closer)
+### Connective and transitional slop
+ 
+- "Furthermore,"
+- "Moreover,"
+- "Additionally,"
+- "That being said,"
+- "With that said,"
+- "Having said that,"
+- "It goes without saying,"
+Human writers use some of these sometimes. AI uses them reflexively, at the start of most paragraphs. Density is the tell.
+ 
+## Sentence shapes
+ 
+### Negative parallelism
+ 
+"It's not just X, it's Y."
+"This isn't about X — it's about Y."
+"Not merely a tool, but a transformation."
+ 
+Fix: convert to a direct claim. "X is Y" or "The point is Y."
+ 
+### False ranges
+ 
+"From startups to Fortune 500s."
+"From boardrooms to break rooms."
+"From coffee shops to coding bootcamps."
+ 
+The structure implies a spectrum but names two loosely related endpoints. Fix: pick one concrete example, or drop the range entirely.
+ 
+### Triadic adjective stacks
+ 
+"Precise, elegant, and powerful."
+"Fast, reliable, and scalable."
+"Clear, concise, and actionable."
+ 
+AI loves rhythm-of-three. Humans usually pick one adjective. Fix: choose the single most specific adjective.
+ 
+### Tailing participle clauses
+ 
+The sentence makes a claim, then adds a participial phrase of vague importance:
+ 
+"...emphasizing the significance of community engagement."
+"...reflecting the continued relevance of traditional craftsmanship."
+"...highlighting the need for thoughtful adoption."
+"...underscoring the importance of ethical design."
+ 
+Fix: cut the tail. If the claim is real, make it a separate sentence with specifics. If it's filler, delete.
+ 
+### Hedge scaffolding
+ 
+"It's worth considering..."
+"One could say..."
+"Arguably..."
+"In many ways..."
+"To a certain extent..."
+ 
+Fix: delete the opener. The sentence almost always survives and gets sharper.
+ 
+### Compulsive summaries
+ 
+A closing paragraph that restates what was just said. Especially common in short pieces that don't need one. AI adds these reflexively because Q&A training taught it to wrap up.
+ 
+Fix: delete the summary paragraph entirely, or rewrite it so it says something new (an implication, a next step, a caveat).
+ 
+### Symmetric pairs
+ 
+"Both powerful and accessible."
+"Simple yet sophisticated."
+"Ancient wisdom meets modern technology."
+ 
+AI likes balanced oppositions that sound profound but don't commit. Fix: pick a side or be specific.
+ 
+## Content smells
+ 
+### Puffed-up significance
+ 
+"This represents a pivotal moment in the evolution of..."
+"Marked a significant turning point in..."
+"Stands as a testament to the enduring power of..."
+ 
+LLMs inflate importance because their training includes a lot of press releases and Wikipedia leads. Fix: if the claim is real, state it plainly with evidence. If it's filler, cut.
+ 
+### Generic statements that apply to anything
+ 
+"Innovation is reshaping industries across the globe."
+"Technology continues to transform how we live and work."
+"The digital age has fundamentally altered the way we connect."
+ 
+These sentences could appear in an article on any subject. They're regression-to-the-mean filler. Fix: delete or replace with a claim that's specific to the actual subject.
+ 
+### Press-release / TV-commercial tone
+ 
+- Landscapes are scenic
+- Views are breathtaking
+- Experiences are immersive
+- Solutions are innovative
+- Teams are passionate
+- Journeys are transformative
+- Futures are bright
+Fix: replace with concrete description (what specifically is scenic? what does the view actually look like?) or cut.
+ 
+### Hollow notability / authority claims
+ 
+"Widely regarded as a leader in the field."
+"Recognized for their groundbreaking work."
+"Has become synonymous with excellence."
+ 
+AI loves to assert importance without evidence. Fix: provide the evidence (what did they do? who recognized them?) or delete the claim.
+ 
+### Fabricated specificity
+ 
+AI will invent plausible-sounding statistics, quotes, and citations. "A 2022 study from MIT found that 73% of..." Check claims that feel too convenient. If you can't verify, flag for the user rather than silently keeping.
+ 
+## Formatting
+ 
+### Em-dashes
+ 
+AI uses em-dashes at multiples of the rate of typical human prose, and often in places where a comma, colon, period, or parentheses would be more natural. It especially uses them to punch up parallel clauses in a sales-y way.
+ 
+Fix: replace most with other punctuation. Keep one or two if they're doing real work (a sharp interruption, a dash-off at sentence end). If the user has said never use em-dashes, remove all of them.
+ 
+### Title Case Section Headers
+ 
+AI tends to capitalize every main word in headings, even when the document otherwise uses sentence case.
+ 
+AI: "## The Importance Of Effective Communication"
+Human: "## The importance of effective communication"
+ 
+Fix: match whichever style the rest of the document uses. Default to sentence case.
+ 
+### Overeager bold
+ 
+AI bolds every instance of a key term, or bolds the first few words of each bullet in a list "key-takeaways" style. This is inherited from readme files, fan wikis, and marketing listicles.
+ 
+Fix: remove bold unless it's actively helping the reader scan (a defined term, a warning, a label).
+ 
+### Emoji bullets
+ 
+✅ Feature one
+🚀 Feature two
+💡 Feature three
+ 
+Near-instant tell, especially on LinkedIn. Fix: remove emojis unless the context explicitly calls for them (a casual social post the user wants to keep casual).
+ 
+### Markdown bleeding into prose
+ 
+If the output is going into an email, a doc, or anywhere that doesn't render markdown, strip `**bold**`, `###` headers, and unnecessary lists. AI sprinkles these habitually.
+ 
+### Excessive structure
+ 
+Short pieces broken into six sections with headers, subheaders, and bullet lists, when plain paragraphs would serve. AI defaults to over-structuring. Fix: flatten to paragraphs when the content doesn't need the scaffolding.
+ 
+## The burstiness check
+ 
+Human prose has **burstiness**: sentence lengths vary. Short punchy lines mixed with longer descriptive ones. AI prose tends toward uniformly medium-length, well-constructed sentences — nothing jarring, nothing exceptional.
+ 
+After editing, read the piece aloud. If every sentence feels the same length, break a few into short blunt ones. End a paragraph on a three-word sentence occasionally. Let a long sentence actually breathe.
+ 
+## Density heuristic
+ 
+When scanning a piece, count tells across categories. Rough thresholds:
+ 
+- **0–2 tells in a 500-word piece**: leave it alone, probably human with a ghost of AI assist.
+- **3–6 tells**: light pass, fix the worst offenders.
+- **7+ tells, or clear structural patterns (negative parallelism + participle tails + triadic lists) repeating**: full rewrite pass across all four categories.
+Don't be pedantic. The goal is prose that sounds human, not a zero-tell rulebook compliance score.
+ 
