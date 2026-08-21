@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ============================================================
+     PROOFREAD MARKUP TEMPLATE
+     Fill the four zones marked  >>> FILL <<<  then delete the
+     example highlight/comment pairs. Everything else (CSS + JS)
+     is the reusable engine; do not change the class names or the
+     data-c / id="cN" / id="dN" pairing conventions, the script
+     depends on them. See SKILL.md for the markup rules.
+     ============================================================ -->
+<title>Proofread Markup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16202b; --paper:#ffffff; --bg:#e7e9ec; --rule:#d3d8de; --muted:#5d6772; --navy:#1f2a37;
+    --crit:#be3329; --crit-bg:#fbe4e1;
+    --high:#b26a00; --high-bg:#fbeed1;
+    --med:#2563a8;  --med-bg:#deebf8;
+    --note:#5d6772; --note-bg:#e7eaed;
+    --ok:#1f7a4d;   --ok-bg:#d9efe2;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+
+  .masthead{background:var(--navy);color:#f4f6f8;padding:26px 32px 22px;border-bottom:3px solid var(--crit)}
+  .masthead .kicker{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#9fb0c0;margin:0 0 8px}
+  .masthead h1{font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:30px;margin:0;letter-spacing:-.01em}
+  .masthead p{margin:8px 0 0;color:#c2ccd6;font-size:14px;max-width:62ch}
+
+  .scorebar{display:flex;flex-wrap:wrap;gap:10px;padding:16px 32px;background:#f4f6f8;border-bottom:1px solid var(--rule)}
+  .score{display:flex;align-items:center;gap:9px;padding:8px 14px;border-radius:7px;background:var(--paper);border:1px solid var(--rule);font-size:13px;font-weight:500}
+  .dot{width:11px;height:11px;border-radius:50%;flex:none}
+  .score b{font-weight:700;font-size:15px}
+  .d-crit{background:var(--crit)} .d-high{background:var(--high)} .d-med{background:var(--med)} .d-note{background:var(--note)} .d-ok{background:var(--ok)}
+
+  .wrap{display:grid;grid-template-columns:minmax(0,1fr) 372px;gap:0;align-items:start}
+
+  .doc{background:var(--paper);padding:40px 46px 80px;font-family:'Newsreader',Georgia,serif;font-size:16.5px;line-height:1.62;color:#1c2630;border-right:1px solid var(--rule);min-height:100vh}
+  .doc .field-label{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+  .doc h2{font-family:'Inter',sans-serif;font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);margin:38px 0 14px;padding-bottom:7px;border-bottom:2px solid var(--navy)}
+  .doc h2:first-child{margin-top:0}
+  .doc h3{font-family:'Inter',sans-serif;font-weight:600;font-size:15px;margin:24px 0 4px;color:var(--navy)}
+  .doc p{margin:0 0 13px}
+  .meta{font-size:14.5px;line-height:1.85;color:#33414e;margin:0 0 6px}
+  .meta .field-label{display:inline}
+  .ph{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--high);background:var(--high-bg);padding:1px 7px;border-radius:4px}
+
+  .hl{border-radius:3px;padding:0 2px;cursor:pointer;position:relative;transition:filter .12s ease, box-shadow .12s ease;text-decoration:none;border-bottom:2px solid transparent}
+  .hl:hover{filter:brightness(.97)}
+  .hl sup{font-family:'Inter',sans-serif;font-weight:700;font-size:9.5px;padding-left:1px;vertical-align:super}
+  .hl.crit{background:var(--crit-bg);border-bottom-color:var(--crit)} .hl.crit sup{color:var(--crit)}
+  .hl.high{background:var(--high-bg);border-bottom-color:var(--high)} .hl.high sup{color:var(--high)}
+  .hl.med{background:var(--med-bg);border-bottom-color:var(--med)} .hl.med sup{color:var(--med)}
+  .hl.note{background:var(--note-bg);border-bottom-color:var(--note)} .hl.note sup{color:var(--note)}
+  .hl.ok{background:var(--ok-bg);border-bottom-color:var(--ok)} .hl.ok sup{color:var(--ok)}
+  .hl.flash{box-shadow:0 0 0 3px rgba(190,51,41,.35);filter:brightness(1.02)}
+
+  .rail{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;background:#f4f6f8;padding:24px 20px 60px}
+  .rail h4{font-family:'Inter',sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:600}
+  .cmt{background:var(--paper);border:1px solid var(--rule);border-left-width:4px;border-radius:8px;padding:13px 15px 14px;margin-bottom:12px;scroll-margin-top:18px;transition:box-shadow .12s ease, transform .12s ease}
+  .cmt:hover{box-shadow:0 2px 10px rgba(20,32,43,.08)}
+  .cmt.flash{box-shadow:0 0 0 3px rgba(31,42,55,.18)}
+  .cmt.crit{border-left-color:var(--crit)} .cmt.high{border-left-color:var(--high)} .cmt.med{border-left-color:var(--med)} .cmt.note{border-left-color:var(--note)} .cmt.ok{border-left-color:var(--ok)}
+  .cmt-head{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+  .badge{width:22px;height:22px;border-radius:50%;flex:none;display:grid;place-items:center;font-family:'Inter',sans-serif;font-weight:700;font-size:11px;color:#fff}
+  .badge.crit{background:var(--crit)} .badge.high{background:var(--high)} .badge.med{background:var(--med)} .badge.note{background:var(--note)} .badge.ok{background:var(--ok)}
+  .tag{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;padding:2px 7px;border-radius:4px}
+  .tag.crit{background:var(--crit-bg);color:var(--crit)} .tag.high{background:var(--high-bg);color:var(--high)} .tag.med{background:var(--med-bg);color:var(--med)} .tag.note{background:var(--note-bg);color:var(--note)} .tag.ok{background:var(--ok-bg);color:var(--ok)}
+  .cmt .snip{font-family:'Newsreader',serif;font-style:italic;font-size:13.5px;color:#475360;border-left:2px solid var(--rule);padding-left:9px;margin:0 0 8px}
+  .cmt .issue{font-size:13px;color:#2b3742;margin:0 0 7px}
+  .cmt .fix{font-size:13px;color:#1c2630;background:#f1f7f3;border-radius:6px;padding:8px 10px}
+  .cmt .fix b{color:var(--ok)}
+  .cmt code{font-family:'IBM Plex Mono',monospace;font-size:12px;background:#eef1f4;padding:1px 5px;border-radius:4px}
+
+  /* inline comment popped under a highlight */
+  .inline-cmt{position:relative;margin:8px 0 18px;font-family:'Inter',sans-serif;cursor:default;border-left-width:4px;box-shadow:0 8px 24px rgba(20,32,43,.13);animation:icIn .18s ease}
+  .inline-cmt:hover{box-shadow:0 8px 24px rgba(20,32,43,.13)}
+  @keyframes icIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+  .ic-close{position:absolute;top:6px;right:8px;border:none;background:transparent;font-size:19px;line-height:1;color:var(--muted);cursor:pointer;padding:2px 7px;border-radius:6px}
+  .ic-close:hover{background:#eef1f4;color:var(--ink)}
+
+  /* resolve controls */
+  .rail-tools{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 14px}
+  .rail-tools h4{margin:0}
+  .hidetoggle{display:flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;font-size:11px;color:var(--muted);cursor:pointer;user-select:none}
+  .hidetoggle input{cursor:pointer;margin:0}
+  .resolve-btn{margin-left:auto;border:1px solid var(--rule);background:var(--paper);color:var(--muted);font-family:'Inter',sans-serif;font-size:10.5px;font-weight:600;padding:3px 10px;border-radius:20px;cursor:pointer;white-space:nowrap;transition:border-color .12s,color .12s,background .12s}
+  .resolve-btn:hover{border-color:var(--ok);color:var(--ok)}
+  .resolve-btn.is-on{background:var(--ok);border-color:var(--ok);color:#fff}
+  .inline-cmt .cmt-head{padding-right:26px}
+  .hl.resolved{background:var(--ok-bg)!important;border-bottom-color:var(--ok)!important;opacity:.5}
+  .hl.resolved sup{color:var(--ok)!important}
+  .cmt.resolved{opacity:.55}
+  .cmt.resolved .snip{text-decoration:line-through;text-decoration-color:rgba(0,0,0,.25)}
+  .rail.hide-resolved .cmt.resolved{display:none}
+
+  /* optional fact-check / numbers card (use inside .rail) */
+  .statcard{background:var(--paper);border:1px solid var(--rule);border-radius:10px;margin:18px 0 6px;overflow:hidden}
+  .statcard .sc-head{color:#fff;padding:10px 14px;font-family:'Inter',sans-serif;font-weight:600;font-size:13px}
+  table.stat{width:100%;border-collapse:collapse;font-family:'Inter',sans-serif;font-size:12.5px}
+  table.stat th{text-align:left;background:#f4f6f8;color:var(--muted);font-weight:600;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--rule)}
+  table.stat td{padding:9px 12px;border-bottom:1px solid #eef1f4;vertical-align:top;color:#2b3742}
+  table.stat tr:last-child td{border-bottom:none}
+  .pill{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;padding:2px 7px;border-radius:4px}
+  .pill.bad{background:var(--crit-bg);color:var(--crit)} .pill.good{background:var(--ok-bg);color:var(--ok)}
+  .num{font-family:'IBM Plex Mono',monospace;font-weight:500;white-space:nowrap}
+
+  @media (max-width:960px){
+    .wrap{grid-template-columns:1fr}
+    .doc{border-right:none;border-bottom:1px solid var(--rule);min-height:0;padding:28px 22px 44px}
+    .rail{position:static;height:auto}
+    .masthead,.scorebar{padding-left:22px;padding-right:22px}
+  }
+</style>
+</head>
+<body>
+
+<!-- =========== MASTHEAD  >>> FILL <<< =========== -->
+<header class="masthead">
+  <p class="kicker">Proofread Markup · {{REVIEW_DATE}}</p>
+  <h1>{{DOC_TITLE}}</h1>
+  <p>Tap any highlight to read the note in place, right under that line. Tap it again or the × to close, and mark a note Resolved once you have addressed it. Severity is colour coded below.</p>
+</header>
+
+<!-- =========== SCOREBAR  >>> FILL counts <<< =========== -->
+<div class="scorebar">
+  <div class="score"><span class="dot d-crit"></span><b>{{N_CRIT}}</b> Critical, fix before sending</div>
+  <div class="score"><span class="dot d-high"></span><b>{{N_HIGH}}</b> Grammar / clarity</div>
+  <div class="score"><span class="dot d-med"></span><b>{{N_MED}}</b> Style / consistency</div>
+  <div class="score"><span class="dot d-note"></span><b>{{N_NOTE}}</b> Notes / suggestions</div>
+  <div class="score"><span class="dot d-ok"></span><b>{{N_OK}}</b> Verified, keep</div>
+  <div class="score" id="resolvedChip"><span class="dot d-ok"></span><b id="resolvedN">0</b> Resolved</div>
+</div>
+
+<div class="wrap">
+
+  <!-- =========== DOCUMENT  >>> FILL <<< ===========
+       Paste the reviewed text here as normal prose in <p> (and <h2>/<h3>
+       for sections). Wrap each flagged passage exactly like the examples.
+       The number in data-c, the id="dN", and the <sup>N</sup> must all match,
+       and must match the comment's id="cN" in the rail. SEV is one of:
+       crit | high | med | note | ok  (see SKILL.md). -->
+  <main class="doc">
+
+    <h2>Example section</h2>
+    <p>This sentence contains <a class="hl crit" data-c="1"><span id="d1">a serious factual error<sup>1</sup></span></a> that must be fixed, and also <a class="hl med" data-c="2"><span id="d2">a slightly clumsy phrase<sup>2</sup></span></a> worth tightening. A claim that checks out is <a class="hl ok" data-c="3"><span id="d3">marked verified so the review is not all negative<sup>✓</sup></span></a>.</p>
+    <!-- delete the example above and write the real document -->
+
+  </main>
+
+  <!-- =========== COMMENTS  >>> FILL <<< ===========
+       One .cmt per highlight. id="cN" pairs with the highlight's data-c="N".
+       data-target="dN" points back at the span. SEV + label pairing:
+       crit→Critical · high→Fix · med→Style · note→Note · ok→Verified.
+       Do NOT put id="" attributes inside .snip/.issue/.fix (the inline
+       clone would duplicate them). The Comments heading count and Resolved
+       tally fill in automatically; just set the five scorebar counts. -->
+  <aside class="rail">
+    <div class="rail-tools">
+      <h4 id="railCount">Comments</h4>
+      <label class="hidetoggle"><input type="checkbox" id="hideResolved"> Hide resolved</label>
+    </div>
+
+    <div class="cmt crit" id="c1" data-target="d1">
+      <div class="cmt-head"><span class="badge crit">1</span><span class="tag crit">Critical</span></div>
+      <p class="snip">"a serious factual error"</p>
+      <p class="issue">State plainly what is wrong and why it matters. Critical means wrong facts, broken claims, or anything that would embarrass the author if sent.</p>
+      <p class="fix"><b>Fix:</b> give the concrete correction, ideally with the corrected wording in <code>code</code> style.</p>
+    </div>
+
+    <div class="cmt med" id="c2" data-target="d2">
+      <div class="cmt-head"><span class="badge med">2</span><span class="tag med">Style</span></div>
+      <p class="snip">"a slightly clumsy phrase"</p>
+      <p class="issue">Explain the readability or tone problem.</p>
+      <p class="fix"><b>Fix:</b> offer a cleaner rewrite.</p>
+    </div>
+
+    <div class="cmt ok" id="c3" data-target="d3">
+      <div class="cmt-head"><span class="badge ok">✓</span><span class="tag ok">Verified</span></div>
+      <p class="snip">"marked verified so the review is not all negative"</p>
+      <p class="issue">Confirm what you checked and against which source. Keep these, they build trust.</p>
+    </div>
+
+    <!-- OPTIONAL fact-check / numbers card. Set sc-head colour with
+         style="background:var(--ok)" when all rows check out, or
+         style="background:var(--crit)" when something is wrong. -->
+    <!--
+    <div class="statcard">
+      <div class="sc-head" style="background:var(--ok)">Figures, checked against sources</div>
+      <table class="stat">
+        <thead><tr><th>Claim in text</th><th>What the source says</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Claim <span class="num">$16.4bn</span></td><td>Source: <span class="num">$16.4bn</span></td><td><span class="pill good">Verified</span></td></tr>
+          <tr><td>Claim <span class="num">$99bn</span></td><td>Source has no such figure</td><td><span class="pill bad">Unsupported</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    -->
+
+  </aside>
+</div>
+
+<!-- =========== ENGINE (do not edit) =========== -->
+<script>
+  function esc(v){ return (window.CSS && CSS.escape) ? CSS.escape(v) : v; }
+  function flash(el){ if(!el) return; el.classList.add('flash'); setTimeout(function(){el.classList.remove('flash');}, 1000); }
+
+  var openCard = null, openFor = null;
+  var resolved = new Set();                          // session-only; resets on reload
+
+  function closeInline(){ if(openCard){ openCard.remove(); openCard = null; openFor = null; } }
+
+  function sevOf(node){
+    var s = ['crit','high','med','note','ok'];
+    for(var i=0;i<s.length;i++){ if(node.classList.contains(s[i])) return s[i]; }
+    return 'note';
+  }
+
+  function updateBtn(scope, on){
+    if(!scope) return;
+    var b = scope.querySelector('.resolve-btn');
+    if(!b) return;
+    b.textContent = on ? 'Resolved' : 'Resolve';
+    b.classList.toggle('is-on', on);
+  }
+
+  function updateCounter(){
+    var n = resolved.size;
+    var el = document.getElementById('resolvedN'); if(el) el.textContent = n;
+    var total = document.querySelectorAll('.rail .cmt').length;
+    var rc = document.getElementById('railCount');
+    if(rc) rc.textContent = 'Comments · ' + total + (n ? ' · ' + n + ' resolved' : '');
+  }
+
+  function applyResolved(id){
+    var on = resolved.has(id);
+    document.querySelectorAll('.doc .hl[data-c="'+esc(id)+'"]').forEach(function(h){ h.classList.toggle('resolved', on); });
+    var rc = document.getElementById('c'+id);
+    if(rc){ rc.classList.toggle('resolved', on); updateBtn(rc, on); }
+    if(openCard && openFor === id){ openCard.classList.toggle('resolved', on); updateBtn(openCard, on); }
+    updateCounter();
+  }
+
+  function toggleResolve(id){
+    if(resolved.has(id)) resolved.delete(id); else resolved.add(id);
+    applyResolved(id);
+  }
+
+  function openInline(id, scrollMode){
+    if(openFor === id){ closeInline(); return; }   // same highlight again -> toggle closed
+    closeInline();                                  // only one open at a time
+    var hl = document.querySelector('.doc .hl[data-c="'+esc(id)+'"]');
+    var src = document.getElementById('c'+id);
+    if(!hl || !src) return;
+    var block = hl.closest('p, h3, h2');
+    if(!block) return;
+    var card = document.createElement('div');
+    card.className = 'cmt inline-cmt ' + sevOf(src);
+    card.dataset.id = id;
+    card.innerHTML = '<button class="ic-close" aria-label="Close">\u00d7</button>' + src.innerHTML;
+    block.parentNode.insertBefore(card, block.nextSibling);
+    openCard = card; openFor = id;
+    if(resolved.has(id)) card.classList.add('resolved');
+    updateBtn(card, resolved.has(id));
+    card.querySelector('.ic-close').addEventListener('click', function(ev){ ev.stopPropagation(); closeInline(); });
+    flash(hl);
+    if(scrollMode === 'center'){ hl.scrollIntoView({behavior:'smooth', block:'center'}); }
+    else { card.scrollIntoView({behavior:'smooth', block:'nearest'}); }
+  }
+
+  // give every rail comment a resolve button + data-id
+  document.querySelectorAll('.rail .cmt').forEach(function(c){
+    if(!c.id) return;
+    var id = c.id.slice(1);
+    c.dataset.id = id;
+    var head = c.querySelector('.cmt-head');
+    if(head && !head.querySelector('.resolve-btn')){
+      var b = document.createElement('button');
+      b.className = 'resolve-btn'; b.type = 'button'; b.textContent = 'Resolve';
+      head.appendChild(b);
+    }
+  });
+
+  // click a highlight -> comment appears right under that line
+  document.querySelectorAll('.doc .hl').forEach(function(h){
+    h.addEventListener('click', function(e){ e.preventDefault(); openInline(h.getAttribute('data-c'), 'nearest'); });
+  });
+
+  // click a rail comment -> jump to its line and open there (ignore the resolve button)
+  document.querySelectorAll('.rail .cmt').forEach(function(c){
+    c.addEventListener('click', function(e){
+      if(e.target.closest('.resolve-btn')) return;
+      var tid = c.getAttribute('data-target');
+      if(!tid) return;
+      openInline(tid.slice(1), 'center');
+    });
+  });
+
+  // resolve / unresolve, delegated so cloned inline buttons work too
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('.resolve-btn');
+    if(!btn) return;
+    e.preventDefault(); e.stopPropagation();
+    var host = btn.closest('.cmt');
+    var id = host && host.dataset ? host.dataset.id : null;
+    if(id) toggleResolve(id);
+  });
+
+  // hide-resolved toggle
+  var hr = document.getElementById('hideResolved');
+  if(hr) hr.addEventListener('change', function(){
+    var rail = document.querySelector('.rail');
+    if(rail) rail.classList.toggle('hide-resolved', hr.checked);
+  });
+
+  updateCounter();
+</script>
+</body>
+</html>
