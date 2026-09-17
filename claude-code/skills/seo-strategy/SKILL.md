@@ -17,26 +17,12 @@ Programmatic SEO: one template, one data set, one page per high-intent query.
 One query pattern -> one template. Fill `[bracket]` from data set (competitors, roles, integrations, segments).
 
 - **Alternatives** `[Competitor] alternatives`
-  - Intent: unhappy with tool, wants shortlist
-  - Needs: real ranked list (you lead, others genuine), why-switch, one honest line each
 - **Head-to-head** `[Competitor] vs [Competitor]`
-  - Intent: down to two, wants decision
-  - Needs: feature matrix, "who each wins for" verdict, no strawman
 - **Review** `[Competitor] review`
-  - Intent: researching one tool, wants opinion
-  - Needs: balanced pros/cons, who it fits, where it falls short
 - **Best-for** `Best [product] for [X]`
-  - Intent: category shopping within segment
-  - Needs: list scoped to X, criteria stated, picks fit X
 - **Switching how-to** `How to export data from [Competitor]`
-  - Intent: already leaving, wants mechanics
-  - Needs: correct steps, format + gotchas, migration = CTA
 - **Role** `[Software] for [role]`
-  - Intent: persona checks fit
-  - Needs: role's real pains + outcomes, their words, not generic
 - **Integration** `[Software] with [X]` / `connect [X]`
-  - Intent: "works with X?"
-  - Needs: confirm works, setup steps, what it unlocks
 
 Extend as new shapes appear (pricing, "is X worth it", "X for [industry]"). Method same: one template, data set, page per row.
 
